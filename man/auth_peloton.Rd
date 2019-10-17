@@ -4,7 +4,13 @@
 \alias{auth_peloton}
 \title{POST's credentials to Pelton's auth/login endpoint to enable further requests}
 \usage{
-auth_peloton()
+auth_peloton(login = Sys.getenv("PELOTON_LOGIN"),
+  password = Sys.getenv("PELOTON_PASSWORD"))
+}
+\arguments{
+\item{login}{Peloton Logi}
+
+\item{password}{Peloton password}
 }
 \description{
 POST's credentials to Pelton's auth/login endpoint to enable further requests

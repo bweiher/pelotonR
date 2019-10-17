@@ -4,13 +4,15 @@
 #'
 #'
 #' @export
+#' @param login Peloton Logi
+#' @param password Peloton password
 #'
-auth_peloton <- function() {
+#'
+auth_peloton <- function(login = Sys.getenv("PELOTON_LOGIN"),
+                         password = Sys.getenv("PELOTON_PASSWORD")) {
 
-  login <- Sys.getenv("PELOTON_LOGIN")
-  pass <- Sys.getenv("PELOTON_PASSWORD")
 
-  if (login == "" || pass == "") {
+  if (login == "" || password == "") {
     stop("Set environmental variables for your login ('PELOTON_LOGIN') and password ('PELOTON_PASSWORD')", call. = FALSE)
   }
 
