@@ -4,10 +4,12 @@
 \alias{parse_list_to_df}
 \title{Parsing the JSON content of a response and turning result into a tibble. Converts nested lists into list-columns.}
 \usage{
-parse_list_to_df(list)
+parse_list_to_df(list, parse_dates = TRUE)
 }
 \arguments{
 \item{list}{The JSON content of a response (a named list in R)}
+
+\item{parse_dates}{Whether to turn timestamps into datetimes}
 }
 \description{
 Parsing the JSON content of a response and turning result into a tibble. Converts nested lists into list-columns.
