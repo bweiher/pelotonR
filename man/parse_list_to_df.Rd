@@ -12,3 +12,9 @@ parse_list_to_df(list)
 \description{
 Parsing the JSON content of a response and turning result into a tibble. Converts nested lists into list-columns.
 }
+\examples{
+\dontrun{
+parse_list_to_df(peloton_api("api/me")$content)
+}
+
+}

@@ -5,11 +5,14 @@
 #'
 #' @export
 #' @param list The JSON content of a response (a named list in R)
-
+#' @examples
+#' \dontrun{
+#' parse_list_to_df(peloton_api("api/me")$content)
+#' }
+#'
 parse_list_to_df <- function(list) {
   names <- names(list)
   m <- stats::setNames(dplyr::as_tibble(as.data.frame(matrix(nrow = 1L, ncol = length(names)))), names)
-
   for (column in seq_along(names)) {
     val <- list[[column]]
     if (is.null(val) || length(val) == 0) {

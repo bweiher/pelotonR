@@ -12,5 +12,11 @@ peloton_api(path, ...)
 \item{...}{Additional parameters passed onto methods}
 }
 \description{
-Makes a GET request against one of Peloton's APIs
+Not normally envoked by the end user
+}
+\examples{
+\dontrun{
+peloton_auth() ; peloton_api("api/me")
+}
+
 }

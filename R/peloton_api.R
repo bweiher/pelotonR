@@ -1,17 +1,19 @@
 #' Makes a GET request against one of Peloton's APIs
 #'
 #'
-#'
+#' Not normally envoked by the end user
 #'
 #' @export
 #' @param path API endpoint to query
 #' @param ... Additional parameters passed onto methods
-
+#' @examples
+#' \dontrun{
+#' peloton_auth() ; peloton_api("api/me")
+#' }
+#'
 peloton_api <- function(path, ...) {
   # ua <- httr::user_agent("https://github.com/bweiher/pelotonR")
-
   url <- httr::modify_url("https://api.onepeloton.com/", path = path, ...)
-
   resp <- httr::GET(url = url)
 
   if (httr::http_type(resp) != "application/json") {
@@ -19,7 +21,6 @@ peloton_api <- function(path, ...) {
   }
 
   parsed <- jsonlite::fromJSON(httr::content(resp, "text", encoding = "UTF-8"), simplifyVector = FALSE)
-
 
   if (httr::http_error(resp)) {
     msg <- glue::glue(
@@ -32,7 +33,6 @@ peloton_api <- function(path, ...) {
       call. = FALSE
     )
   }
-
 
   structure(
     list(
@@ -48,5 +48,4 @@ peloton_api <- function(path, ...) {
 print.peloton_api <- function(x, ...) {
   cat("<Peloton ", x$path, ">\n", sep = "")
   utils::str(x$content)
-  invisible(x)
 }
