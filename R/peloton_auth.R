@@ -1,7 +1,7 @@
-#' POST's credentials to Pelton's auth/login endpoint to enable further requests
+#' \code{POST} credentials to Peloton's auth/login endpoint
 #'
 #'
-#' User needs to set environmental variables `PELOTON_LOGIN` and `PELOTON_PASSWORD` to authenticate API requests
+#' Users needs to run this each session in order to authenticate any requests made against other Pelton endpoints. Set environmental variables \code{`PELOTON_LOGIN`} and \code{`PELOTON_PASSWORD`}, or provide them yourself.
 #'
 #' @export
 #' @param login Peloton login

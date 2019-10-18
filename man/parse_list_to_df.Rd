@@ -2,7 +2,7 @@
 % Please edit documentation in R/parse_list_to_df.R
 \name{parse_list_to_df}
 \alias{parse_list_to_df}
-\title{Parsing the JSON content of a response and turning result into a tibble. Converts nested lists into list-columns.}
+\title{Parse the \code{JSON} content of a response and turning result into a tibble.}
 \usage{
 parse_list_to_df(list, parse_dates = TRUE)
 }
@@ -12,7 +12,7 @@ parse_list_to_df(list, parse_dates = TRUE)
 \item{parse_dates}{Whether to turn timestamps into datetimes}
 }
 \description{
-Parsing the JSON content of a response and turning result into a tibble. Converts nested lists into list-columns.
+Helper agnostic function to parse the content for API responses made to Peloton's API. Leaves most datatypes alone, but converts nested lists into list-columns.
 }
 \examples{
 \dontrun{

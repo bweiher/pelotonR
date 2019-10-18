@@ -2,7 +2,7 @@
 % Please edit documentation in R/peloton_auth.R
 \name{peloton_auth}
 \alias{peloton_auth}
-\title{POST's credentials to Pelton's auth/login endpoint to enable further requests}
+\title{\code{POST} credentials to Peloton's auth/login endpoint}
 \usage{
 peloton_auth(login = Sys.getenv("PELOTON_LOGIN"),
   password = Sys.getenv("PELOTON_PASSWORD"))
@@ -13,7 +13,7 @@ peloton_auth(login = Sys.getenv("PELOTON_LOGIN"),
 \item{password}{Peloton password}
 }
 \description{
-User needs to set environmental variables `PELOTON_LOGIN` and `PELOTON_PASSWORD` to authenticate API requests
+Users needs to run this each session in order to authenticate any requests made against other Pelton endpoints. Set environmental variables \code{`PELOTON_LOGIN`} and \code{`PELOTON_PASSWORD`}, or provide them yourself.
 }
 \examples{
 \dontrun{

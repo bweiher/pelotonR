@@ -1,7 +1,7 @@
-#' Makes a GET request against one of Peloton's APIs
+#' Makes a \code{GET} request against one of Peloton's API endpoints
 #'
 #'
-#' Not normally envoked by the end user
+#' Users need not invoke this method directly
 #'
 #' @export
 #' @param path API endpoint to query
@@ -12,7 +12,7 @@
 #' }
 #'
 peloton_api <- function(path, ...) {
-  # ua <- httr::user_agent("https://github.com/bweiher/pelotonR")
+
   url <- httr::modify_url("https://api.onepeloton.com/", path = path, ...)
   resp <- httr::GET(url = url)
 

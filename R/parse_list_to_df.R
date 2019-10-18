@@ -1,7 +1,7 @@
-#' Parsing the JSON content of a response and turning result into a tibble. Converts nested lists into list-columns.
+#' Parse the \code{JSON} content of a response and turning result into a tibble.
 #'
 #'
-#'
+#' Helper agnostic function to parse the content for API responses made to Peloton's API. Leaves most datatypes alone, but converts nested lists into list-columns.
 #'
 #' @export
 #' @param list The JSON content of a response (a named list in R)
@@ -28,10 +28,10 @@ parse_list_to_df <- function(list, parse_dates = TRUE) {
 }
 
 
-#' Helper function to infer which columns are dates (UNIX epoch) and parse them as such.
+#' Convert UNIX epoch timestamps to datetime
 #'
 #'
-#' Automatically converts timezone to America/Los_Angeles
+#' Helper function convert UNIX timestamps to datestamps. By default converts to \code{America/Los_Angeles} timezone.
 #'
 #' @export
 #' @param dataframe A dataframe containing some columns that may be dates

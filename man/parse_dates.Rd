@@ -2,7 +2,7 @@
 % Please edit documentation in R/parse_list_to_df.R
 \name{parse_dates}
 \alias{parse_dates}
-\title{Helper function to infer which columns are dates (UNIX epoch) and parse them as such.}
+\title{Convert UNIX epoch timestamps to datetime}
 \usage{
 parse_dates(dataframe, tz = "America/Los_Angeles")
 }
@@ -12,7 +12,7 @@ parse_dates(dataframe, tz = "America/Los_Angeles")
 \item{tz}{Timezone to convert datestamp to}
 }
 \description{
-Automatically converts timezone to America/Los_Angeles
+Helper function convert UNIX timestamps to datestamps. By default converts to \code{America/Los_Angeles} timezone.
 }
 \examples{
 \dontrun{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/peloton_api.R
 \name{peloton_api}
 \alias{peloton_api}
-\title{Makes a GET request against one of Peloton's APIs}
+\title{Makes a \code{GET} request against one of Peloton's API endpoints}
 \usage{
 peloton_api(path, ...)
 }
@@ -12,7 +12,7 @@ peloton_api(path, ...)
 \item{...}{Additional parameters passed onto methods}
 }
 \description{
-Not normally envoked by the end user
+Users need not invoke this method directly
 }
 \examples{
 \dontrun{

@@ -1,11 +1,10 @@
 Package: pelotonR
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Title: An R interface to the Peloton API
+Version: 0.1.1
+Author: Ben Weiher
+Maintainer: Ben Weiher <bweiher@pm.me>
+Description: Functions to facillitate interactions with Peloton's API. Provides utility functions for solving common tasks, and provides a built in Shiny application to visualize data.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -15,3 +14,4 @@ Imports:
   glue,
   jsonlite,
   dplyr
+Depends: R (>= 2.10)
