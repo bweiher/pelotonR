@@ -2,11 +2,11 @@
 #'
 #' A dataset containing Peloton API endpoints and some useful metadata about them
 #'
-#' @format A data frame with 53940 rows and 10 variables:
+#' @format A data frame with 4 rows and 4 variables:
 #' \describe{
 #'   \item{endpoint}{the endpoint to query against}
-#'   \item{optional_args }{if you can augment your query with additional arguments}
-#'   \item{description}{description about what the data contains}
+#'   \item{optional_args }{arguments you can augment your query with}
+#'   \item{description}{description about what the response data contains}
 #'   ...
 #' }
 "peloton_apis"

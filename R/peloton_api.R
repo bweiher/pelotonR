@@ -1,18 +1,19 @@
 #' Makes a \code{GET} request against one of Peloton's API endpoints
 #'
 #'
-#' Users need not invoke this method directly
+#' Users need not invoke this method directly and may instead use one of the wrappers around specific endpoints, such as
 #'
 #' @export
 #' @param path API endpoint to query
 #' @param ... Additional parameters passed onto methods
 #' @examples
 #' \dontrun{
-#' peloton_auth() ; peloton_api("api/me")
+#' peloton_auth()
+#' peloton_api("api/me")
 #' }
 #'
 peloton_api <- function(path, ...) {
-
+  path <- glue::glue("{path}")
   url <- httr::modify_url("https://api.onepeloton.com/", path = path, ...)
   resp <- httr::GET(url = url)
 
@@ -36,9 +37,9 @@ peloton_api <- function(path, ...) {
 
   structure(
     list(
-      content = parsed,
       path = path,
-      response = resp
+      response = resp,
+      content = parsed
     ),
     class = "peloton_api"
   )

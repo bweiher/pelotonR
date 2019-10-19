@@ -16,7 +16,8 @@ Users need not invoke this method directly
 }
 \examples{
 \dontrun{
-peloton_auth() ; peloton_api("api/me")
+peloton_auth()
+peloton_api("api/me")
 }
 
 }
