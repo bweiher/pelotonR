@@ -12,7 +12,7 @@ peloton_api(path, ...)
 \item{...}{Additional parameters passed onto methods}
 }
 \description{
-Users need not invoke this method directly
+Users need not invoke this method directly and may instead use one of the wrappers around specific endpoints, such as
 }
 \examples{
 \dontrun{

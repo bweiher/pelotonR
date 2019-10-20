@@ -42,7 +42,8 @@ get_perfomance_graphs <- function(workout_ids, every_n = 5){
       )
     ) %>%
       .$content %>%
-      parse_list_to_df()
+      parse_list_to_df() %>%
+      mutate(id = workout_id)
   })
 
 }
@@ -62,7 +63,7 @@ get_perfomance_graphs <- function(workout_ids, every_n = 5){
 #'
 get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID")){
   # TODO pagination  in API ?
-  if(Sys.getenv("PELOTON_USERID") == '') stop("Provide a userid or set an environmental variable `PELOTON_USERID`", call. = FALSE)
+  if(userid == '') stop("Provide a userid or set an environmental variable `PELOTON_USERID`", call. = FALSE)
   workouts <- peloton_api(path = glue::glue("api/user/{userid}/workouts"))
   n_workouts <- length(workouts$content$data)
   if(n_workouts > 0) purrr::map_df(1:length(workouts$content$data), ~parse_list_to_df(workouts$content$data[[.]]))
@@ -84,7 +85,7 @@ get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID")){
 #' }
 #'
 get_workouts_data <- function(workout_ids){
-workouts <- purrr::map_df(workout_ids, function(workout_id){
+  purrr::map_df(workout_ids, function(workout_id){
   peloton_api(path = glue::glue("api/workout/{workout_id}")) %>%
     .$content %>%
     parse_list_to_df()
