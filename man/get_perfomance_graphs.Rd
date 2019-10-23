@@ -12,7 +12,7 @@ get_perfomance_graphs(workout_ids, every_n = 5)
 \item{every_n}{Everywhat?}
 }
 \description{
-Returns time series of individual workouts capturing cadence, output, resistance and speed measured at many intervals.
+A vectorized function for each workout, returns a time series of individual workouts capturing cadence, output, resistance and speed measured over intervals.
 }
 \examples{
 \dontrun{

@@ -2,17 +2,17 @@
 % Please edit documentation in R/parsing.R
 \name{parse_list_to_df}
 \alias{parse_list_to_df}
-\title{Parse the \code{JSON} content of a response and turning result into a tibble.}
+\title{Parse the \code{JSON} content of a response and turn the result into a \code{tibble} .}
 \usage{
 parse_list_to_df(list, parse_dates = TRUE)
 }
 \arguments{
-\item{list}{The JSON content of a response (a named list in R)}
+\item{list}{The JSON content of a response (aka a named list in R)}
 
-\item{parse_dates}{Whether to turn timestamps into datetimes}
+\item{parse_dates}{Whether to turn epoch timestamps into datetimes}
 }
 \description{
-Helper agnostic function to parse the content for API responses made to Peloton's API. Leaves most datatypes alone, but converts nested lists into list-columns.
+A helper, agnostic function to parse the content of API responses made to Peloton's API. Leaves most datatypes alone, but converts nested lists into list-columns.
 }
 \examples{
 \dontrun{

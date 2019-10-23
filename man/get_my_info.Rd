@@ -7,7 +7,7 @@
 get_my_info()
 }
 \description{
-Returns user metadata, including userid, email, account status, etc..
+Returns user metadata, including userid, email, account status, etc.  \code{userid} is particularly useful since it is a required input to access other endpoints such as \code{\link{get_workouts_data}}, and \code{\link{get_perfomance_graphs}}.
 }
 \examples{
 \dontrun{

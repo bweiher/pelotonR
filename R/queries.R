@@ -4,7 +4,7 @@ utils::globalVariables(c("."))
 #' Makes a request against the \code{api/me} endpoint
 #'
 #'
-#' Returns user metadata, including userid, email, account status, etc..
+#' Returns user metadata, including userid, email, account status, etc.  \code{userid} is particularly useful since it is a required input to access other endpoints such as \code{\link{get_workouts_data}}, and \code{\link{get_perfomance_graphs}}.
 #'
 #' @export
 #' @examples
@@ -22,7 +22,7 @@ get_my_info <- function(){
 #' Makes a request against the \code{api/workout/workout_id/performance_graph} endpoint
 #'
 #'
-#' Returns time series of individual workouts capturing cadence, output, resistance and speed measured at many intervals.
+#' A vectorized function for each workout, returns a time series of individual workouts capturing cadence, output, resistance and speed measured over intervals.
 #'
 #' @export
 #' @param workout_ids WorkoutIDs
@@ -43,7 +43,7 @@ get_perfomance_graphs <- function(workout_ids, every_n = 5){
     ) %>%
       .$content %>%
       parse_list_to_df() %>%
-      mutate(id = workout_id)
+      dplyr::mutate(id = workout_id)
   })
 
 }
@@ -75,7 +75,7 @@ get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID")){
 #' Makes a request against the \code{api/workout/workout_id} endpoint
 #'
 #'
-#' Returns data about an individual workout.
+#' A vectorized function that returns data about individual workouts.
 #'
 #' @export
 #' @param workout_ids WorkoutIDs

@@ -12,12 +12,11 @@ peloton_api(path, ...)
 \item{...}{Additional parameters passed onto methods}
 }
 \description{
-Users need not invoke this method directly and may instead use one of the wrappers around specific endpoints, such as
+Users need not invoke this method directly and may instead use one of the wrappers around specific endpoints that also vectorizes inputs and processes the data returned, such as \code{\link{get_my_info}},  \code{\link{get_perfomance_graphs}}, \code{\link{get_all_workouts}}, \code{\link{get_workouts_data}}
 }
 \examples{
 \dontrun{
-peloton_auth()
-peloton_api("api/me")
+peloton_auth() ; peloton_api("api/me")
 }
 
 }

@@ -1,11 +1,11 @@
-#' Parse the \code{JSON} content of a response and turning result into a tibble.
+#' Parse the \code{JSON} content of a response and turn the result into a \code{tibble} .
 #'
 #'
-#' Helper agnostic function to parse the content for API responses made to Peloton's API. Leaves most datatypes alone, but converts nested lists into list-columns.
+#' A helper, agnostic function to parse the content of API responses made to Peloton's API. Leaves most datatypes alone, but converts nested lists into list-columns.
 #'
 #' @export
-#' @param list The JSON content of a response (a named list in R)
-#' @param parse_dates Whether to turn timestamps into datetimes
+#' @param list The JSON content of a response (aka a named list in R)
+#' @param parse_dates Whether to turn epoch timestamps into datetimes
 #' @examples
 #' \dontrun{
 #' parse_list_to_df(peloton_api("api/me")$content)

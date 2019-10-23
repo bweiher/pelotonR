@@ -10,7 +10,7 @@ get_workouts_data(workout_ids)
 \item{workout_ids}{WorkoutIDs}
 }
 \description{
-Returns data about an individual workout.
+A vectorized function that returns data about individual workouts.
 }
 \examples{
 \dontrun{
