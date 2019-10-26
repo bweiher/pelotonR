@@ -10,11 +10,12 @@ get_all_workouts(userid = Sys.getenv("PELOTON_USERID"))
 \item{userid}{userID}
 }
 \description{
-Lists (all?) workouts for a user
+Lists (all?) workouts for a user, along with some metadata.
 }
 \examples{
 \dontrun{
-peloton_auth() ; get_all_workouts()
+peloton_auth()
+get_all_workouts()
 }
 
 }

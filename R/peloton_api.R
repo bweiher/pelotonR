@@ -8,7 +8,8 @@
 #' @param ... Additional parameters passed onto methods
 #' @examples
 #' \dontrun{
-#' peloton_auth() ; peloton_api("api/me")
+#' peloton_auth()
+#' peloton_api("api/me")
 #' }
 #'
 peloton_api <- function(path, ...) {

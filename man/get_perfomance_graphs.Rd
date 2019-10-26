@@ -9,10 +9,10 @@ get_perfomance_graphs(workout_ids, every_n = 5)
 \arguments{
 \item{workout_ids}{WorkoutIDs}
 
-\item{every_n}{Everywhat?}
+\item{every_n}{How often measurements are reported. If set to 1, there will be 60 data points per minute of a workout.}
 }
 \description{
-A vectorized function for each workout, returns a time series of individual workouts capturing cadence, output, resistance and speed measured over intervals.
+For each workout, returns time series of individual workouts capturing cadence, output, resistance, speed, heart-rate (if applicable), measured at second intervals defined by \code{every_n}. A vectorized function, so accepts multiple \code{workoutIDs} at once.
 }
 \examples{
 \dontrun{

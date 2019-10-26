@@ -10,11 +10,12 @@ get_workouts_data(workout_ids)
 \item{workout_ids}{WorkoutIDs}
 }
 \description{
-A vectorized function that returns data about individual workouts.
+Returns data about individual workouts. A vectorized function, so accepts multiple \code{workoutIDs} at once.
 }
 \examples{
 \dontrun{
-peloton_auth() ; get_all_workouts()
+peloton_auth()
+get_all_workouts()
 }
 
 }

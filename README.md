@@ -17,7 +17,7 @@ devtools::install_github("bweiher/pelotonR")
 
 #### __Authenticating__:
 
-You need to set environmental variables or `PELOTON_LOGIN` and `PELOTON_PASSWORD` or provide them in this initial step, which must be run before you can issue other queries. 
+You need to set environmental variables: `PELOTON_LOGIN` and `PELOTON_PASSWORD`, or provide them in this initial step, which must be run before you can issue other queries. 
 
 ``` r
 library(pelotonR)
@@ -25,19 +25,22 @@ peloton_auth()
 
 ```
 
-Making queries -- most useful endpoints already have `get_` functions to retrieve and parse the responses. You can also query other endpoints using `peloton_api` in case new ones are introduced, as in the commented out sections below. 
+Most useful endpoints already have functions starting with `get_`  that retrieve and parse the API responses, and handle iteration through a list of inputs. You can also query other endpoints using `peloton_api` in case new ones are introduced. You can see how that works in the commented out portions below.
 
 #### __Interacting__:
 
-To get your `user_id`, which also either needs to be supplied or read from an environmental variable, `PELOTON_USERID`.
+There are several endpoints where you need to already know some piece of information to get that particular data. 
+
+For example, to list workouts, you will need your `user_id`, which you can get from the `api/me` endpoint. 
+
+Either supply it or set it as an environmental variable, `PELOTON_USERID`:
 
 ```r
 # get data about yourself
 me <- get_my_info() # peloton_api("api/me")
 user_id <- me$id
 ```
-
-It can then be used against the `workouts` endpoint, to fetch your workout ids:
+It can then be used against the `workouts` endpoint, to fetch your `workout_id`'s:
 
 ```r
 # get a list of your workouts
@@ -46,7 +49,7 @@ workout_ids <- workouts$id
 
 ```
 
-The final two endpoints contain your performance graphs and other workout data:
+The final two endpoints contain your performance graphs and other workout data. You need to provide `workout_id`'s here, but each function accepts multiple at once:
 
 ```r
 # get performance graph data
@@ -60,4 +63,4 @@ get_workouts_data(workout_ids) # peloton_api(api/workout/workout_id/")
 ```
 #### __Future__
 
-A fancy Shiny dashboard and some algorithm to help optimize your fitness
+A fancy Shiny dashboard to track progress and some models to help optimize your fitness.

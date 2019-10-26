@@ -4,15 +4,16 @@ utils::globalVariables(c("."))
 #' Makes a request against the \code{api/me} endpoint
 #'
 #'
-#' Returns user metadata, including userid, email, account status, etc.  \code{userid} is particularly useful since it is a required input to access other endpoints such as \code{\link{get_workouts_data}}, and \code{\link{get_perfomance_graphs}}.
+#' Returns user metadata, including userid, email, account status, etc.  \code{userid} is particularly useful since you need it for \code{\link{get_workouts_data}}.
 #'
 #' @export
 #' @examples
 #' \dontrun{
-#' peloton_auth() ; get_my_info()
+#' peloton_auth()
+#' get_my_info()
 #' }
 #'
-get_my_info <- function(){
+get_my_info <- function() {
   peloton_api("api/me") %>%
     .$content %>%
     parse_list_to_df()
@@ -22,19 +23,19 @@ get_my_info <- function(){
 #' Makes a request against the \code{api/workout/workout_id/performance_graph} endpoint
 #'
 #'
-#' A vectorized function for each workout, returns a time series of individual workouts capturing cadence, output, resistance and speed measured over intervals.
+#' For each workout, returns time series of individual workouts capturing cadence, output, resistance, speed, heart-rate (if applicable), measured at second intervals defined by \code{every_n}. A vectorized function, so accepts multiple \code{workoutIDs} at once.
 #'
 #' @export
 #' @param workout_ids WorkoutIDs
-#' @param every_n Everywhat?
+#' @param every_n How often measurements are reported. If set to 1, there will be 60 data points per minute of a workout.
 #' @examples
 #' \dontrun{
 #' workouts <- get_all_workouts()
 #' get_perfomance_graphs(workouts$id)
 #' }
 #'
-get_perfomance_graphs <- function(workout_ids, every_n = 5){
-  purrr::map_df(workout_ids, function(workout_id){
+get_perfomance_graphs <- function(workout_ids, every_n = 5) {
+  purrr::map_df(workout_ids, function(workout_id) {
     peloton_api(
       path = glue::glue("api/workout/{workout_id}/performance_graph"),
       query = list(
@@ -45,28 +46,28 @@ get_perfomance_graphs <- function(workout_ids, every_n = 5){
       parse_list_to_df() %>%
       dplyr::mutate(id = workout_id)
   })
-
 }
 
 
 #' Makes a request against the \code{api/user_id/workouts/} endpoint
 #'
 #'
-#' Lists (all?) workouts for a user
+#' Lists (all?) workouts for a user, along with some metadata.
 #'
 #' @export
 #' @param userid userID
 #' @examples
 #' \dontrun{
-#' peloton_auth() ; get_all_workouts()
+#' peloton_auth()
+#' get_all_workouts()
 #' }
 #'
-get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID")){
+get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID")) {
   # TODO pagination  in API ?
-  if(userid == '') stop("Provide a userid or set an environmental variable `PELOTON_USERID`", call. = FALSE)
+  if (userid == "") stop("Provide a userid or set an environmental variable `PELOTON_USERID`", call. = FALSE)
   workouts <- peloton_api(path = glue::glue("api/user/{userid}/workouts"))
   n_workouts <- length(workouts$content$data)
-  if(n_workouts > 0) purrr::map_df(1:length(workouts$content$data), ~parse_list_to_df(workouts$content$data[[.]]))
+  if (n_workouts > 0) purrr::map_df(1:length(workouts$content$data), ~ parse_list_to_df(workouts$content$data[[.]]))
 }
 
 
@@ -75,19 +76,20 @@ get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID")){
 #' Makes a request against the \code{api/workout/workout_id} endpoint
 #'
 #'
-#' A vectorized function that returns data about individual workouts.
+#' Returns data about individual workouts. A vectorized function, so accepts multiple \code{workoutIDs} at once.
 #'
 #' @export
 #' @param workout_ids WorkoutIDs
 #' @examples
 #' \dontrun{
-#' peloton_auth() ; get_all_workouts()
+#' peloton_auth()
+#' get_all_workouts()
 #' }
 #'
-get_workouts_data <- function(workout_ids){
-  purrr::map_df(workout_ids, function(workout_id){
-  peloton_api(path = glue::glue("api/workout/{workout_id}")) %>%
-    .$content %>%
-    parse_list_to_df()
-})
+get_workouts_data <- function(workout_ids) {
+  purrr::map_df(workout_ids, function(workout_id) {
+    peloton_api(path = glue::glue("api/workout/{workout_id}")) %>%
+      .$content %>%
+      parse_list_to_df()
+  })
 }

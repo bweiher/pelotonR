@@ -7,11 +7,12 @@
 get_my_info()
 }
 \description{
-Returns user metadata, including userid, email, account status, etc.  \code{userid} is particularly useful since it is a required input to access other endpoints such as \code{\link{get_workouts_data}}, and \code{\link{get_perfomance_graphs}}.
+Returns user metadata, including userid, email, account status, etc.  \code{userid} is particularly useful since you need it for \code{\link{get_workouts_data}}.
 }
 \examples{
 \dontrun{
-peloton_auth() ; get_my_info()
+peloton_auth()
+get_my_info()
 }
 
 }
