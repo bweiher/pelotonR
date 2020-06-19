@@ -52,10 +52,11 @@ get_perfomance_graphs <- function(workout_ids, every_n = 5) {
 #' Makes a request against the \code{api/user_id/workouts/} endpoint
 #'
 #'
-#' Lists (all?) workouts for a user, along with some metadata.
+#' Lists requested number of workouts for a user, along with some metadata.
 #'
 #' @export
 #' @param userid userID
+#' @param num_workouts num_workouts
 #' @examples
 #' \dontrun{
 #' peloton_auth()
