@@ -4,13 +4,15 @@
 \alias{get_all_workouts}
 \title{Makes a request against the \code{api/user_id/workouts/} endpoint}
 \usage{
-get_all_workouts(userid = Sys.getenv("PELOTON_USERID"))
+get_all_workouts(userid = Sys.getenv("PELOTON_USERID"), num_workouts = 20)
 }
 \arguments{
 \item{userid}{userID}
+
+\item{num_workouts}{num_workouts}
 }
 \description{
-Lists (all?) workouts for a user, along with some metadata.
+Lists requested number of workouts for a user, along with some metadata.
 }
 \examples{
 \dontrun{
