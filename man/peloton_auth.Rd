@@ -4,8 +4,10 @@
 \alias{peloton_auth}
 \title{\code{POST} credentials to Peloton's auth/login endpoint}
 \usage{
-peloton_auth(login = Sys.getenv("PELOTON_LOGIN"),
-  password = Sys.getenv("PELOTON_PASSWORD"))
+peloton_auth(
+  login = Sys.getenv("PELOTON_LOGIN"),
+  password = Sys.getenv("PELOTON_PASSWORD")
+)
 }
 \arguments{
 \item{login}{Peloton login}
