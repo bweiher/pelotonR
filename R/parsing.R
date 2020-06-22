@@ -50,7 +50,7 @@ parse_dates <- function(dataframe, tz = "America/Los_Angeles") {
   for (i in seq_along(names)) {
     name <- names[i]
     # TODO parse inner list too
-    true[[i]] <- grepl(pattern = "^1[0-9]{9}", x = dataframe[[name]]) && !is.list(dataframe[[name]]) && name!="id"
+    true[[i]] <- grepl(pattern = "^1[0-9]{9}", x = dataframe[[name]]) && !is.list(dataframe[[name]]) && name!="id" && name!="facebook_id"
   }
   vars <- names[true]
   dplyr::mutate_at(dataframe, vars, fn)
