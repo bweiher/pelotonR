@@ -41,7 +41,7 @@ parse_list_to_df <- function(list, parse_dates = TRUE) {
 #' parse_dates(data.frame(a = 1570914652, b = "adad", c = 123L))
 #' }
 #'
-parse_dates <- function(dataframe, tz = "America/Los_Angeles") {
+parse_dates <- function(dataframe, tz = base::Sys.timezone()) {
   fn <- function(x, ...) {
     as.POSIXct(x, origin = "1970-01-01", tz)
   }
@@ -50,7 +50,7 @@ parse_dates <- function(dataframe, tz = "America/Los_Angeles") {
   for (i in seq_along(names)) {
     name <- names[i]
     # TODO parse inner list too
-    true[[i]] <- grepl(pattern = "^1[0-9]{9}", x = dataframe[[name]]) && !is.list(dataframe[[name]]) && name!="id" && name!="facebook_id"
+    true[[i]] <- grepl(pattern = "^1[0-9]{9}", x = dataframe[[name]]) && !is.list(dataframe[[name]]) && !name %in% c("id", "facebook_id")
   }
   vars <- names[true]
   dplyr::mutate_at(dataframe, vars, fn)

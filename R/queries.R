@@ -39,7 +39,7 @@ get_perfomance_graphs <- function(workout_ids, every_n = 5) {
     peloton_api(
       path = glue::glue("api/workout/{workout_id}/performance_graph"),
       query = list(
-        every_n = every_n # wat does this mean
+        every_n = every_n
       )
     ) %>%
       .$content %>%
@@ -67,7 +67,7 @@ get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID"), num_workouts
   if (userid == "") stop("Provide a userid or set an environmental variable `PELOTON_USERID`", call. = FALSE)
   workouts <- peloton_api(path = glue::glue("api/user/{userid}/workouts?&limit={num_workouts}"))
   n_workouts <- length(workouts$content$data)
-  if (n_workouts > 0) purrr::map_df(1:length(workouts$content$data), ~ parse_list_to_df(workouts$content$data[[.]]))
+  if (n_workouts > 0) purrr::map_df(1:n_workouts, ~ parse_list_to_df(workouts$content$data[[.]]))
 }
 
 
