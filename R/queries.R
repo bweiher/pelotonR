@@ -57,19 +57,46 @@ get_perfomance_graphs <- function(workout_ids, every_n = 5) {
 #' @export
 #' @param userid userID
 #' @param num_workouts num_workouts
+#' @param joins joins to make on the data (e.g. `ride` or `ride.instructor`, joined as a single string)
 #' @examples
 #' \dontrun{
 #' peloton_auth()
 #' get_all_workouts()
+#' get_all_workouts(joins = "ride,ride.instructor")
 #' }
 #'
-get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID"), num_workouts = 20) {
+get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID"), num_workouts = 20, joins = NULL) {
   if (userid == "") stop("Provide a userid or set an environmental variable `PELOTON_USERID`", call. = FALSE)
-  workouts <- peloton_api(path = glue::glue("api/user/{userid}/workouts?&limit={num_workouts}"))
-  n_workouts <- length(workouts$content$data)
-  if (n_workouts > 0) purrr::map_df(1:n_workouts, ~ parse_list_to_df(workouts$content$data[[.]]))
-}
 
+  # see if joins is provided, if so, append to request ``
+  if (!is.null(joins)) {
+    joins <- glue::glue("joins={joins}")
+  } else {
+    joins <- ""
+  }
+
+  path <- glue::glue("/api/user/{userid}/workouts?{joins}&limit={num_workouts}&page=0")
+
+  workouts <- peloton_api(path)
+  n_workouts <- length(workouts$content$data)
+  if (n_workouts > 0) {
+    workouts <- purrr::map_df(1:n_workouts, ~ parse_list_to_df(workouts$content$data[[.]]))
+
+    # IF JOIN PARAM is specified, get data out for ride list and add it to that row
+    if (joins != "") {
+      purrr::map_df(1:n_workouts, function(x) {
+        tmp_ride <- parse_list_to_df(workouts$ride[[x]])
+        colnames(tmp_ride) <- paste0("ride_", colnames(tmp_ride))
+
+        dplyr::bind_cols(
+          dplyr::slice(workouts, x), tmp_ride
+        )
+      })
+    } else {
+      workouts
+    }
+  }
+}
 
 
 
