@@ -7,7 +7,7 @@
 get_all_workouts(
   userid = Sys.getenv("PELOTON_USERID"),
   num_workouts = 20,
-  joins = NULL
+  joins = ""
 )
 }
 \arguments{
