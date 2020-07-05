@@ -15,7 +15,7 @@ get_all_workouts(
 
 \item{num_workouts}{num_workouts}
 
-\item{joins}{joins to make on the data (e.g. `ride` or `ride.instructor`, joined as a single string)}
+\item{joins}{additional joins to make on the data (e.g. `ride` or `ride.instructor`, concatenated as a single string. Results in many additional columns being added to the data.frame)}
 }
 \description{
 Lists requested number of workouts for a user, along with some metadata.
