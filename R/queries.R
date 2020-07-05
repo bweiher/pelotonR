@@ -1,4 +1,4 @@
-utils::globalVariables(c("."))
+utils::globalVariables(c(".", "rn"))
 
 
 #' Makes a request against the \code{api/me} endpoint
@@ -57,19 +57,44 @@ get_perfomance_graphs <- function(workout_ids, every_n = 5) {
 #' @export
 #' @param userid userID
 #' @param num_workouts num_workouts
+#' @param joins additional joins to make on the data (e.g. `ride` or `ride.instructor`, concatenated as a single string. Results in many additional columns being added to the data.frame)
 #' @examples
 #' \dontrun{
 #' peloton_auth()
 #' get_all_workouts()
+#' get_all_workouts(joins = "ride,ride.instructor")
 #' }
 #'
-get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID"), num_workouts = 20) {
+get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID"), num_workouts = 20, joins = "") {
   if (userid == "") stop("Provide a userid or set an environmental variable `PELOTON_USERID`", call. = FALSE)
-  workouts <- peloton_api(path = glue::glue("api/user/{userid}/workouts?&limit={num_workouts}"))
-  n_workouts <- length(workouts$content$data)
-  if (n_workouts > 0) purrr::map_df(1:n_workouts, ~ parse_list_to_df(workouts$content$data[[.]]))
-}
+  if (length(joins) > 1 || !is.character(joins)) stop("Provide joins as a length one character vector", call. = FALSE)
 
+  # see if joins is provided, if so, append to request
+  if (joins != "") joins <- glue::glue("joins={joins}")
+
+  workouts <- peloton_api(glue::glue("/api/user/{userid}/workouts?{joins}&limit={num_workouts}&page=0"))
+  n_workouts <- length(workouts$content$data)
+
+  if (n_workouts > 0) {
+    workouts <- purrr::map_df(1:n_workouts, ~ parse_list_to_df(workouts$content$data[[.]]))
+
+    # IF JOIN PARAM is specified, get data out for ride list and add it to that row
+    if (joins != "") {
+      rides <- purrr::map_df(1:n_workouts, function(x) {
+        tmp_ride <- parse_list_to_df(workouts$ride[[x]])
+        stats::setNames(tmp_ride, paste0("ride_", colnames(tmp_ride)))
+      })
+
+      dplyr::left_join(dplyr::mutate(workouts, rn = dplyr::row_number()),
+        dplyr::mutate(rides, rn = dplyr::row_number()),
+        by  = "rn"
+      ) %>%
+        dplyr::select(-rn)
+    } else {
+      workouts
+    }
+  }
+}
 
 
 
