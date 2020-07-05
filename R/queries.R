@@ -67,12 +67,12 @@ get_perfomance_graphs <- function(workout_ids, every_n = 5) {
 #'
 get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID"), num_workouts = 20, joins = "") {
   if (userid == "") stop("Provide a userid or set an environmental variable `PELOTON_USERID`", call. = FALSE)
+  if (length(joins) > 1) stop("Provide joins as a length one character vector", call. = FALSE)
 
   # see if joins is provided, if so, append to request
   if (joins != "") joins <- glue::glue("joins={joins}")
 
-  path <- glue::glue("/api/user/{userid}/workouts?{joins}&limit={num_workouts}&page=0")
-  workouts <- peloton_api(path)
+  workouts <- peloton_api(glue::glue("/api/user/{userid}/workouts?{joins}&limit={num_workouts}&page=0"))
   n_workouts <- length(workouts$content$data)
 
   if (n_workouts > 0) {
