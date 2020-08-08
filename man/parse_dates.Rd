@@ -4,7 +4,7 @@
 \alias{parse_dates}
 \title{Convert UNIX epoch timestamps to datetime}
 \usage{
-parse_dates(dataframe, tz = "America/Los_Angeles")
+parse_dates(dataframe, tz = base::Sys.timezone())
 }
 \arguments{
 \item{dataframe}{A dataframe containing some columns that may be dates}

@@ -4,18 +4,27 @@
 \alias{get_all_workouts}
 \title{Makes a request against the \code{api/user_id/workouts/} endpoint}
 \usage{
-get_all_workouts(userid = Sys.getenv("PELOTON_USERID"))
+get_all_workouts(
+  userid = Sys.getenv("PELOTON_USERID"),
+  num_workouts = 20,
+  joins = ""
+)
 }
 \arguments{
 \item{userid}{userID}
+
+\item{num_workouts}{num_workouts}
+
+\item{joins}{additional joins to make on the data (e.g. `ride` or `ride.instructor`, concatenated as a single string. Results in many additional columns being added to the data.frame)}
 }
 \description{
-Lists (all?) workouts for a user, along with some metadata.
+Lists requested number of workouts for a user, along with some metadata.
 }
 \examples{
 \dontrun{
 peloton_auth()
 get_all_workouts()
+get_all_workouts(joins = "ride,ride.instructor")
 }
 
 }
