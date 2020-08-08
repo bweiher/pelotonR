@@ -25,6 +25,12 @@ parse_list_to_df <- function(list, parse_dates = TRUE) {
   }
   if (parse_dates) m <- parse_dates(m)
   m
+  if ("ride_instructor" %in% colnames(m)) {
+    if(is.character(m$ride_instructor)) {
+      m$ride_instructor <- list(m$ride_instructor)
+    }
+  }
+  m
 }
 
 
