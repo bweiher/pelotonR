@@ -84,7 +84,7 @@ get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID"), num_workouts
         tmp_ride <- parse_list_to_df(workouts$ride[[x]])
         stats::setNames(tmp_ride, paste0("ride_", colnames(tmp_ride)))
       })
-
+      workouts <-
       dplyr::left_join(dplyr::mutate(workouts, rn = dplyr::row_number()),
         dplyr::mutate(rides, rn = dplyr::row_number()),
         by  = "rn"
