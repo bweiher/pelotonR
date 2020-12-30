@@ -44,7 +44,10 @@ get_perfomance_graphs <- function(workout_ids, every_n = 5) {
     ) %>%
       .$content %>%
       parse_list_to_df() %>%
-      dplyr::mutate(id = workout_id)
+      dplyr::mutate(id = workout_id,
+                    segment_list = list(segment_list),
+                    seconds_since_pedaling_start = list(seconds_since_pedaling_start)
+                    )
   })
 }
 
@@ -76,7 +79,11 @@ get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID"), num_workouts
   n_workouts <- length(workouts$content$data)
 
   if (n_workouts > 0) {
-    workouts <- purrr::map_df(1:n_workouts, ~ parse_list_to_df(workouts$content$data[[.]]))
+    workouts <- purrr::map_df(1:n_workouts, ~ parse_list_to_df(workouts$content$data[[.]]) %>%
+      dplyr::mutate(
+        v2_total_video_buffering_seconds = as.integer(v2_total_video_buffering_seconds),
+        v2_total_video_watch_time_seconds = as.integer(v2_total_video_watch_time_seconds)
+      ))
 
     # IF JOIN PARAM is specified, get data out for ride list and add it to that row
     if (joins != "") {
@@ -115,6 +122,12 @@ get_workouts_data <- function(workout_ids) {
   purrr::map_df(workout_ids, function(workout_id) {
     peloton_api(path = glue::glue("api/workout/{workout_id}")) %>%
       .$content %>%
-      parse_list_to_df()
+      parse_list_to_df() %>%
+      dplyr::mutate(
+        achievement_templates = list(achievement_templates),
+        v2_total_video_watch_time_seconds = as.integer(v2_total_video_watch_time_seconds),
+        v2_total_video_buffering_seconds = as.integer(v2_total_video_buffering_seconds),
+        leaderboard_rank =  as.integer(leaderboard_rank)
+      )
   })
 }

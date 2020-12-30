@@ -45,7 +45,7 @@ It can then be used against the `workouts` endpoint, to fetch your `workout_id`'
 
 ```r
 # get a list of your workouts
-workouts <- get_all_workouts(user_id) # peloton_api("api/user_id/workouts")
+workouts <- get_all_workouts(user_id) # peloton_api("api/$USER_ID/workouts")
 workout_ids <- workouts$id
 
 ```
@@ -55,13 +55,11 @@ The final two endpoints contain your performance graphs and other workout data. 
 ```r
 # get performance graph data
 # vectorized function
-get_performance_graphs(workout_ids) # peloton_api(api/workout/workout_id/performance_graph")
+get_performance_graphs(workout_ids) # peloton_api("api/workout/$WORKOUT_ID/performance_graph")
 
 # get other workout data
 # vectorized function
-get_workouts_data(workout_ids) # peloton_api(api/workout/workout_id/")
+get_workouts_data(workout_ids) # peloton_api("api/workout/$WORKOUT_ID/")
 
 ```
-#### __Future__
 
-A fancy Shiny dashboard to track progress and some models to help optimize your fitness.

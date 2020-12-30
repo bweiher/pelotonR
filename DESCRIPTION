@@ -1,14 +1,14 @@
 Package: pelotonR
 Type: Package
 Title: An R interface to the Peloton API
-Version: 0.1.1
+Version: 0.1.2
 Author: Ben Weiher
 Maintainer: Ben Weiher <bweiher@pm.me>
-Description: Functions to facillitate interactions with Peloton's API. Provides utility functions for solving common tasks, and provides a built in Shiny application to visualize data.
+Description: Functions to facillitate interactions with Peloton's API. Provides utility functions for solving common tasks and helps get data from the main API endpoints you may be interested in.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Imports:
   httr,
   glue,

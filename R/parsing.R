@@ -20,6 +20,8 @@ parse_list_to_df <- function(list, parse_dates = TRUE) {
       val <- NA_character_
     } else if (is.list(val) && (!length(val) == 0)) {
       val <- list(val)
+    } else {
+      m[[column]] <- val
     }
     m[[column]] <- val
   }
