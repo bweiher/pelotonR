@@ -1,5 +1,4 @@
-utils::globalVariables(c(".", "rn"))
-
+utils::globalVariables(c("."))
 
 #' Makes a request against the \code{api/me} endpoint
 #'
@@ -26,15 +25,16 @@ get_my_info <- function() {
 #' For each workout, returns time series of individual workouts capturing cadence, output, resistance, speed, heart-rate (if applicable), measured at second intervals defined by \code{every_n}. A vectorized function, so accepts multiple \code{workoutIDs} at once.
 #'
 #' @export
+#' @importFrom rlang .data
 #' @param workout_ids WorkoutIDs
 #' @param every_n How often measurements are reported. If set to 1, there will be 60 data points per minute of a workout.
 #' @examples
 #' \dontrun{
 #' workouts <- get_all_workouts()
-#' get_perfomance_graphs(workouts$id)
+#' get_performance_graphs(workouts$id)
 #' }
 #'
-get_perfomance_graphs <- function(workout_ids, every_n = 5) {
+get_performance_graphs <- function(workout_ids, every_n = 5) {
   purrr::map_df(workout_ids, function(workout_id) {
     peloton_api(
       path = glue::glue("api/workout/{workout_id}/performance_graph"),
@@ -44,7 +44,10 @@ get_perfomance_graphs <- function(workout_ids, every_n = 5) {
     ) %>%
       .$content %>%
       parse_list_to_df() %>%
-      dplyr::mutate(id = workout_id)
+      dplyr::mutate(id = workout_id,
+                    seconds_since_pedaling_start =  list(.data$seconds_since_pedaling_start) ,
+                    segment_list = list(.data$segment_list)
+                    )
   })
 }
 
@@ -76,7 +79,11 @@ get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID"), num_workouts
   n_workouts <- length(workouts$content$data)
 
   if (n_workouts > 0) {
-    workouts <- purrr::map_df(1:n_workouts, ~ parse_list_to_df(workouts$content$data[[.]]))
+    workouts <- purrr::map_df(1:n_workouts, ~ parse_list_to_df(workouts$content$data[[.]]) %>%
+      dplyr::mutate(
+        v2_total_video_buffering_seconds = as.double(.data$v2_total_video_buffering_seconds),
+        v2_total_video_watch_time_seconds = as.double(.data$v2_total_video_watch_time_seconds)
+      ))
 
     # IF JOIN PARAM is specified, get data out for ride list and add it to that row
     if (joins != "") {
@@ -89,7 +96,7 @@ get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID"), num_workouts
         dplyr::mutate(rides, rn = dplyr::row_number()),
         by  = "rn"
       ) %>%
-        dplyr::select(-rn)
+        dplyr::select(-.data$rn)
     } else {
       workouts
     }
@@ -115,6 +122,15 @@ get_workouts_data <- function(workout_ids) {
   purrr::map_df(workout_ids, function(workout_id) {
     peloton_api(path = glue::glue("api/workout/{workout_id}")) %>%
       .$content %>%
-      parse_list_to_df()
+      parse_list_to_df() %>%
+      dplyr::mutate(
+        achievement_templates = list(.data$achievement_templates),
+        v2_total_video_watch_time_seconds = as.double(.data$v2_total_video_watch_time_seconds),
+        v2_total_video_buffering_seconds = as.double(.data$v2_total_video_buffering_seconds),
+        v2_total_video_watch_time_seconds = as.double(.data$v2_total_video_watch_time_seconds),
+        leaderboard_rank =  as.double(.data$leaderboard_rank)
+      )
   })
 }
+
+
