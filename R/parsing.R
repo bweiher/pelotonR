@@ -6,12 +6,13 @@
 #' @export
 #' @param list The JSON content of a response (aka a named list in R)
 #' @param parse_dates Whether to turn epoch timestamps into datetimes
+#' @param ... Arguments passed onto methods
 #' @examples
 #' \dontrun{
 #' parse_list_to_df(peloton_api("api/me")$content)
 #' }
 #'
-parse_list_to_df <- function(list, parse_dates = TRUE) {
+parse_list_to_df <- function(list, parse_dates = TRUE, ...) {
   names <- names(list)
   m <- stats::setNames(dplyr::as_tibble(as.data.frame(matrix(nrow = 1L, ncol = length(names)))), names)
   for (column in seq_along(names)) {
@@ -26,7 +27,7 @@ parse_list_to_df <- function(list, parse_dates = TRUE) {
     m[[column]] <- val
   }
   if (parse_dates) m <- parse_dates(m)
-  m
+  update_types(df = m, ...)
 }
 
 
@@ -57,4 +58,53 @@ parse_dates <- function(dataframe, tz = base::Sys.timezone()) {
   }
   vars <- names[true]
   dplyr::mutate_at(dataframe, vars, fn)
+}
+
+
+#' Update data types after parsing to dataframe
+#'
+#'
+#' Sometimes certain columns are adadeada
+#'
+#' @export
+#' @param df the output of parse_list_to_df
+#' @param dictionary dictionary to interpret
+#' @examples
+#' \dontrun{
+#' df <- dplyr::tibble(
+#'   z = c("1", "2", "3"),
+#'   x = c(9, 8, 7), f = "a"
+#' )
+#' dictionary <- list(
+#'   "numeric" = c("x", "z"),
+#'   "character" = c("m", "f")
+#' )
+#' update_types(df, dictionary)
+#' }
+#'
+update_types <- function(df, dictionary=NULL) {
+  if (!is.null(dictionary)) {
+    for (g in seq_along(dictionary)) {
+      cols <- dictionary[[g]]
+      # loop across types
+      for (i in seq_along(cols)) {
+        # ensure column exists in df
+        if (cols[[i]] %in% colnames(df)) {
+          # extract type
+          type_convert <- names(dictionary[g])
+          # convert types
+          if (type_convert == "numeric") {
+            df[[cols[[i]]]] <- as.numeric(df[[cols[[i]]]])
+          } else if (type_convert == "character") {
+            df[[cols[[i]]]] <- as.character(df[[cols[[i]]]])
+          } else if (type_convert == "list") {
+            df[[cols[[i]]]] <- list(df[[cols[[i]]]])
+          }
+        }
+      }
+    }
+    df
+  } else {
+    df
+  }
 }
