@@ -4,18 +4,29 @@
 \alias{get_workouts_data}
 \title{Makes a request against the \code{api/workout/workout_id} endpoint}
 \usage{
-get_workouts_data(workout_ids)
+get_workouts_data(workout_ids, dictionary = NULL, ...)
 }
 \arguments{
 \item{workout_ids}{WorkoutIDs}
+
+\item{dictionary}{A named list mapping a data-type to a column name}
+
+\item{...}{Other arguments passed on to methods}
 }
 \description{
 Returns data about individual workouts. A vectorized function, so accepts multiple \code{workoutIDs} at once.
 }
 \examples{
 \dontrun{
-peloton_auth()
-get_all_workouts()
+get_workouts_data(
+  workout_ids = workout_ids,
+  dictionary = list(
+    "numeric" = c(
+      "v2_total_video_watch_time_seconds", "v2_total_video_buffering_seconds",
+      "v2_total_video_watch_time_seconds", "leaderboard_rank"
+    ),
+    "list" = c("achievement_templates")
+  )
+)
 }
-
 }

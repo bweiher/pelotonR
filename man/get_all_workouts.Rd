@@ -7,7 +7,9 @@
 get_all_workouts(
   userid = Sys.getenv("PELOTON_USERID"),
   num_workouts = 20,
-  joins = ""
+  joins = "",
+  dictionary = NULL,
+  ...
 )
 }
 \arguments{
@@ -16,6 +18,10 @@ get_all_workouts(
 \item{num_workouts}{num_workouts}
 
 \item{joins}{additional joins to make on the data (e.g. `ride` or `ride.instructor`, concatenated as a single string. Results in many additional columns being added to the data.frame)}
+
+\item{dictionary}{A named list mapping a data-type to a column name}
+
+\item{...}{Other arguments passed on to methods}
 }
 \description{
 Lists requested number of workouts for a user, along with some metadata.
@@ -25,6 +31,13 @@ Lists requested number of workouts for a user, along with some metadata.
 peloton_auth()
 get_all_workouts()
 get_all_workouts(joins = "ride,ride.instructor")
+# if you run into parsing errors, sometimes helpful to manual override
+workouts <- get_all_workouts(user_id,
+  dictionary = list(
+    "numeric" =
+      c("v2_total_video_buffering_seconds", "v2_total_video_watch_time_seconds")
+  )
+)
 }
 
 }
