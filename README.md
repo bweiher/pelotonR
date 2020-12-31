@@ -46,6 +46,19 @@ It can then be used against the `workouts` endpoint, to fetch your `workout_id`'
 ```r
 # get a list of your workouts
 workouts <- get_all_workouts(user_id) # peloton_api("api/$USER_ID/workouts")
+```
+
+Sometimes the data types returned for certain fields across rides will differ, throwing an error. Since new fields may be introduced, it is possible for you to specify data types if any errors pop up. 
+
+```r
+workouts <- get_all_workouts(
+userid = user_id,
+dictionary = list(
+"numeric" = c("v2_total_video_buffering_seconds", "v2_total_video_watch_time_seconds")
+)
+)
+
+
 workout_ids <- workouts$id
 
 ```
@@ -55,11 +68,21 @@ The final two endpoints contain your performance graphs and other workout data. 
 ```r
 # get performance graph data
 # vectorized function
-get_performance_graphs(workout_ids) # peloton_api("api/workout/$WORKOUT_ID/performance_graph")
+pg <- get_performance_graphs(workout_ids, dictionary =
+ list("list" = c("seconds_since_pedaling_start", "segment_list"))) # peloton_api("api/workout/$WORKOUT_ID/performance_graph")
 
 # get other workout data
 # vectorized function
-get_workouts_data(workout_ids) # peloton_api("api/workout/$WORKOUT_ID/")
+
+get_workouts_data(workout_ids = workout_ids,
+                  dictionary = list(
+                    'numeric' =  c("v2_total_video_watch_time_seconds", "v2_total_video_buffering_seconds",
+                                   "v2_total_video_watch_time_seconds", "leaderboard_rank"),
+                    'list' = c('achievement_templates')
+                  ))
+
 
 ```
+
+### 
 

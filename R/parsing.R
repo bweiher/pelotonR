@@ -6,13 +6,13 @@
 #' @export
 #' @param list The JSON content of a response (aka a named list in R)
 #' @param parse_dates Whether to turn epoch timestamps into datetimes
-#' @param ... Arguments passed onto methods
+#' @param dictionary A dict
 #' @examples
 #' \dontrun{
 #' parse_list_to_df(peloton_api("api/me")$content)
 #' }
 #'
-parse_list_to_df <- function(list, parse_dates = TRUE, ...) {
+parse_list_to_df <- function(list, parse_dates = TRUE, dictionary) {
   names <- names(list)
   m <- stats::setNames(dplyr::as_tibble(as.data.frame(matrix(nrow = 1L, ncol = length(names)))), names)
   for (column in seq_along(names)) {
@@ -27,7 +27,8 @@ parse_list_to_df <- function(list, parse_dates = TRUE, ...) {
     m[[column]] <- val
   }
   if (parse_dates) m <- parse_dates(m)
-  update_types(df = m, ...)
+  if (!is.null(dictionary)) m <- update_types(m, dictionary)
+  m
 }
 
 
@@ -84,6 +85,8 @@ parse_dates <- function(dataframe, tz = base::Sys.timezone()) {
 #'
 update_types <- function(df, dictionary=NULL) {
   if (!is.null(dictionary)) {
+    included_types <- c("numeric", "character", "list")
+    if(!all(names(dictionary) %in% c(included_types))) stop("The provided dictionary can only include one of the following types: `numeric`, `character`, or `list`", call. = FALSE)
     for (g in seq_along(dictionary)) {
       cols <- dictionary[[g]]
       # loop across types

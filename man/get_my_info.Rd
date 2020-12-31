@@ -4,7 +4,12 @@
 \alias{get_my_info}
 \title{Makes a request against the \code{api/me} endpoint}
 \usage{
-get_my_info()
+get_my_info(dictionary = NULL, ...)
+}
+\arguments{
+\item{dictionary}{a dict}
+
+\item{...}{arguments passed onto methods}
 }
 \description{
 Returns user metadata, including userid, email, account status, etc.  \code{userid} is particularly useful since you need it for \code{\link{get_workouts_data}}.
