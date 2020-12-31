@@ -11,9 +11,9 @@ get_performance_graphs(workout_ids, every_n = 5, dictionary = NULL, ...)
 
 \item{every_n}{How often measurements are reported. If set to 1, there will be 60 data points per minute of a workout.}
 
-\item{dictionary}{a dict}
+\item{dictionary}{A named list mapping a data-type to a column name}
 
-\item{...}{args}
+\item{...}{Other arguments passed on to methods}
 }
 \description{
 For each workout, returns time series of individual workouts capturing cadence, output, resistance, speed, heart-rate (if applicable), measured at second intervals defined by \code{every_n}. A vectorized function, so accepts multiple \code{workoutIDs} at once.
@@ -22,8 +22,10 @@ For each workout, returns time series of individual workouts capturing cadence, 
 \dontrun{
 workouts <- get_all_workouts()
 get_performance_graphs(workouts$id)
-get_performance_graphs(workouts$id, dictionary =
- list("list" = c("seconds_since_pedaling_start", "segment_list")))
+get_performance_graphs(workouts$id,
+  dictionary =
+    list("list" = c("seconds_since_pedaling_start", "segment_list"))
+)
 }
 
 }

@@ -6,8 +6,8 @@ utils::globalVariables(c("."))
 #' Returns user metadata, including userid, email, account status, etc.  \code{userid} is particularly useful since you need it for \code{\link{get_workouts_data}}.
 #'
 #' @export
-#' @param dictionary a dict
-#' @param ... arguments passed onto methods
+#' @param dictionary A named list mapping a data-type to a column name
+#' @param ... Other arguments passed on to methods
 #' @examples
 #' \dontrun{
 #' peloton_auth()
@@ -30,14 +30,16 @@ get_my_info <- function(dictionary = NULL, ...) {
 #' @importFrom rlang .data
 #' @param workout_ids WorkoutIDs
 #' @param every_n How often measurements are reported. If set to 1, there will be 60 data points per minute of a workout.
-#' @param dictionary a dict
-#' @param ... args
+#' @param dictionary A named list mapping a data-type to a column name
+#' @param ... Other arguments passed on to methods
 #' @examples
 #' \dontrun{
 #' workouts <- get_all_workouts()
 #' get_performance_graphs(workouts$id)
-#' get_performance_graphs(workouts$id, dictionary =
-#'  list("list" = c("seconds_since_pedaling_start", "segment_list")))
+#' get_performance_graphs(workouts$id,
+#'   dictionary =
+#'     list("list" = c("seconds_since_pedaling_start", "segment_list"))
+#' )
 #' }
 #'
 get_performance_graphs <- function(workout_ids, every_n = 5, dictionary = NULL, ...) {
@@ -66,8 +68,8 @@ get_performance_graphs <- function(workout_ids, every_n = 5, dictionary = NULL, 
 #' @param userid userID
 #' @param num_workouts num_workouts
 #' @param joins additional joins to make on the data (e.g. `ride` or `ride.instructor`, concatenated as a single string. Results in many additional columns being added to the data.frame)
-#' @param dictionary a dict to use
-#' @param ... a dict to use
+#' @param dictionary A named list mapping a data-type to a column name
+#' @param ... Other arguments passed on to methods
 #' @examples
 #' \dontrun{
 #' peloton_auth()
@@ -75,8 +77,10 @@ get_performance_graphs <- function(workout_ids, every_n = 5, dictionary = NULL, 
 #' get_all_workouts(joins = "ride,ride.instructor")
 #' # if you run into parsing errors, sometimes helpful to manual override
 #' workouts <- get_all_workouts(user_id,
-#' dictionary = list("numeric" =
-#' c("v2_total_video_buffering_seconds", "v2_total_video_watch_time_seconds"))
+#'   dictionary = list(
+#'     "numeric" =
+#'       c("v2_total_video_buffering_seconds", "v2_total_video_watch_time_seconds")
+#'   )
 #' )
 #' }
 #'
@@ -121,16 +125,20 @@ get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID"), num_workouts
 #'
 #' @export
 #' @param workout_ids WorkoutIDs
-#' @param dictionary a dict to use
-#' @param ... Arguments passed onto methods
+#' @param dictionary A named list mapping a data-type to a column name
+#' @param ... Other arguments passed on to methods
 #' @examples
 #' \dontrun{
-#' get_workouts_data(workout_ids = workout_ids,
-#' dictionary = list(
-#' 'numeric' =  c("v2_total_video_watch_time_seconds", "v2_total_video_buffering_seconds",
-#' "v2_total_video_watch_time_seconds", "leaderboard_rank"),
-#' 'list' = c('achievement_templates')
-#' ))
+#' get_workouts_data(
+#'   workout_ids = workout_ids,
+#'   dictionary = list(
+#'     "numeric" = c(
+#'       "v2_total_video_watch_time_seconds", "v2_total_video_buffering_seconds",
+#'       "v2_total_video_watch_time_seconds", "leaderboard_rank"
+#'     ),
+#'     "list" = c("achievement_templates")
+#'   )
+#' )
 #' }
 get_workouts_data <- function(workout_ids, dictionary = NULL, ...) {
   purrr::map_df(workout_ids, function(workout_id) {
@@ -139,5 +147,3 @@ get_workouts_data <- function(workout_ids, dictionary = NULL, ...) {
     parse_list_to_df(list = resp, dictionary = dictionary, ...)
   })
 }
-
-

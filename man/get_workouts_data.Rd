@@ -9,20 +9,24 @@ get_workouts_data(workout_ids, dictionary = NULL, ...)
 \arguments{
 \item{workout_ids}{WorkoutIDs}
 
-\item{dictionary}{a dict to use}
+\item{dictionary}{A named list mapping a data-type to a column name}
 
-\item{...}{Arguments passed onto methods}
+\item{...}{Other arguments passed on to methods}
 }
 \description{
 Returns data about individual workouts. A vectorized function, so accepts multiple \code{workoutIDs} at once.
 }
 \examples{
 \dontrun{
-get_workouts_data(workout_ids = workout_ids,
-dictionary = list(
-'numeric' =  c("v2_total_video_watch_time_seconds", "v2_total_video_buffering_seconds",
-"v2_total_video_watch_time_seconds", "leaderboard_rank"),
-'list' = c('achievement_templates')
-))
+get_workouts_data(
+  workout_ids = workout_ids,
+  dictionary = list(
+    "numeric" = c(
+      "v2_total_video_watch_time_seconds", "v2_total_video_buffering_seconds",
+      "v2_total_video_watch_time_seconds", "leaderboard_rank"
+    ),
+    "list" = c("achievement_templates")
+  )
+)
 }
 }

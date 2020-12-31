@@ -12,7 +12,7 @@ update_types(df, dictionary = NULL)
 \item{dictionary}{dictionary to interpret}
 }
 \description{
-Sometimes certain columns are adadeada
+Modify inconsistent data types
 }
 \examples{
 \dontrun{

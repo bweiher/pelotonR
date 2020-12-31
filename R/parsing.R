@@ -65,7 +65,7 @@ parse_dates <- function(dataframe, tz = base::Sys.timezone()) {
 #' Update data types after parsing to dataframe
 #'
 #'
-#' Sometimes certain columns are adadeada
+#' Modify inconsistent data types
 #'
 #' @export
 #' @param df the output of parse_list_to_df
@@ -83,10 +83,10 @@ parse_dates <- function(dataframe, tz = base::Sys.timezone()) {
 #' update_types(df, dictionary)
 #' }
 #'
-update_types <- function(df, dictionary=NULL) {
+update_types <- function(df, dictionary = NULL) {
   if (!is.null(dictionary)) {
     included_types <- c("numeric", "character", "list")
-    if(!all(names(dictionary) %in% c(included_types))) stop("The provided dictionary can only include one of the following types: `numeric`, `character`, or `list`", call. = FALSE)
+    if (!all(names(dictionary) %in% c(included_types))) stop("The provided dictionary can only include one of the following types: `numeric`, `character`, or `list`", call. = FALSE)
     for (g in seq_along(dictionary)) {
       cols <- dictionary[[g]]
       # loop across types

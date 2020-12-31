@@ -7,9 +7,9 @@
 get_my_info(dictionary = NULL, ...)
 }
 \arguments{
-\item{dictionary}{a dict}
+\item{dictionary}{A named list mapping a data-type to a column name}
 
-\item{...}{arguments passed onto methods}
+\item{...}{Other arguments passed on to methods}
 }
 \description{
 Returns user metadata, including userid, email, account status, etc.  \code{userid} is particularly useful since you need it for \code{\link{get_workouts_data}}.
