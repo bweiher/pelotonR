@@ -33,7 +33,7 @@ The main endpoints already have their own helper function that helps parse the r
 
 You can also query other endpoints using `peloton_api` in case new ones are introduced, or if the automatic parsing fails.
 
-The table below documents each endpoint along with its R counterpart, and provides a description of what data is there:
+The table below documents each endpoint along with its `R` counterpart, and provides a description of what data is there:
 
 | endpoint                                 | function                   | endpoint description                     |
 |------------------------------------------|----------------------------|------------------------------------------|
@@ -67,13 +67,15 @@ It can then be used against the `workouts` endpoint, to fetch your `workout_id`'
 workouts <- get_all_workouts(user_id) # peloton_api("api/$USER_ID/workouts")
 ```
 
-#### Errors :x:
+#### :x:Errors :x:
 
 Sometimes the data types returned for particular fields differs across rides, throwing an error, such as below:
 
     #> Error: Can't combine `..1$v2_total_video_watch_time_seconds` <integer> and `..10$v2_total_video_watch_time_seconds` <character>.
 
-Since the API is still evolving (and I don't want to hard-code anything in this package), it is also possible for you to specify data types explicitly to get around inconsistencies. For example, the previous error the `v2_total_video_watch_time_seconds` column had an disagreement.
+Should the **default dictionary** set for each function prove insufficient, it is also possible for you to specify data types explicitly to get around inconsistencies.
+
+For example, in the previous error the `v2_total_video_watch_time_seconds` column had an issue
 
 ``` r
 # fix for error 
@@ -87,7 +89,7 @@ dictionary = list(
 workout_ids <- workouts$id
 ```
 
-Currently, you can coerce fields to one of (`character`, `numeric`, or `list`)
+Currently, you can coerce fields to one of (`character`, `numeric`, or `list`) if you see an error pop up.
 
 The final two endpoints contain your performance graphs and other workout data. You need to provide `workout_id`'s here, but each function accepts multiple at once:
 

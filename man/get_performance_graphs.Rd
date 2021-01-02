@@ -7,7 +7,7 @@
 get_performance_graphs(
   workout_ids,
   every_n = 5,
-  dictionary = NULL,
+  dictionary = list(list = c("seconds_since_pedaling_start", "segment_list")),
   parse_dates = TRUE,
   ...
 )

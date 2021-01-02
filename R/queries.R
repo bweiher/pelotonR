@@ -17,7 +17,7 @@ utils::globalVariables(c("."))
 #'
 get_my_info <- function(dictionary = NULL, parse_dates = TRUE, ...) {
   resp <- peloton_api("api/me", ...)$content
-  parse_list_to_df(resp, parse_dates = parse_dates,  dictionary = dictionary)
+  parse_list_to_df(resp, parse_dates = parse_dates, dictionary = dictionary)
 }
 
 
@@ -43,7 +43,7 @@ get_my_info <- function(dictionary = NULL, parse_dates = TRUE, ...) {
 #' )
 #' }
 #'
-get_performance_graphs <- function(workout_ids, every_n = 5, dictionary = NULL, parse_dates = TRUE, ...) {
+get_performance_graphs <- function(workout_ids, every_n = 5, dictionary =  list("list" = c("seconds_since_pedaling_start", "segment_list")), parse_dates = TRUE, ...) {
   purrr::map_df(workout_ids, function(workout_id) {
     peloton_api(
       path = glue::glue("api/workout/{workout_id}/performance_graph"),
@@ -53,7 +53,7 @@ get_performance_graphs <- function(workout_ids, every_n = 5, dictionary = NULL, 
       ...
     ) %>%
       .$content %>%
-      parse_list_to_df(., dictionary = dictionary, parse_dates=parse_dates) %>%
+      parse_list_to_df(., dictionary = dictionary, parse_dates = parse_dates) %>%
       dplyr::mutate(
         id = workout_id
       )
@@ -87,7 +87,7 @@ get_performance_graphs <- function(workout_ids, every_n = 5, dictionary = NULL, 
 #' )
 #' }
 #'
-get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID"), num_workouts = 20, joins = "", dictionary = NULL, parse_dates = TRUE, ...) {
+get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID"), num_workouts = 20, joins = "", dictionary = list("numeric" = c("v2_total_video_buffering_seconds", "v2_total_video_watch_time_seconds")), parse_dates = TRUE, ...) {
   if (userid == "") stop("Provide a userid or set an environmental variable `PELOTON_USERID`", call. = FALSE)
   if (length(joins) > 1 || !is.character(joins)) stop("Provide joins as a length one character vector", call. = FALSE)
 
@@ -98,12 +98,12 @@ get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID"), num_workouts
   n_workouts <- length(workouts$content$data)
   # v2_total_video_buffering_seconds v2_total_video_watch_time_seconds
   if (n_workouts > 0) {
-    workouts <- purrr::map_df(1:n_workouts, ~ parse_list_to_df(workouts$content$data[[.]], dictionary = dictionary, parse_dates=parse_dates))
+    workouts <- purrr::map_df(1:n_workouts, ~ parse_list_to_df(workouts$content$data[[.]], dictionary = dictionary, parse_dates = parse_dates))
 
     # IF JOIN PARAM is specified, get data out for ride list and add it to that row
     if (joins != "") {
       rides <- purrr::map_df(1:n_workouts, function(x) {
-        tmp_ride <- parse_list_to_df(workouts$ride[[x]], dictionary = dictionary, parse_dates=parse_dates, ...)
+        tmp_ride <- parse_list_to_df(workouts$ride[[x]], dictionary = dictionary, parse_dates = parse_dates, ...)
         stats::setNames(tmp_ride, paste0("ride_", colnames(tmp_ride)))
       })
 
@@ -144,9 +144,15 @@ get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID"), num_workouts
 #'   )
 #' )
 #' }
-get_workouts_data <- function(workout_ids, dictionary = NULL, parse_dates=TRUE, ...) {
+get_workouts_data <- function(workout_ids, dictionary = list(
+  "numeric" = c(
+    "v2_total_video_watch_time_seconds", "v2_total_video_buffering_seconds",
+    "v2_total_video_watch_time_seconds", "leaderboard_rank"
+  ),
+  "list" = c("achievement_templates")
+), parse_dates = TRUE, ...) {
   purrr::map_df(workout_ids, function(workout_id) {
     resp <- peloton_api(path = glue::glue("api/workout/{workout_id}"), ...)$content
-    parse_list_to_df(list = resp, dictionary = dictionary, parse_dates=parse_dates)
+    parse_list_to_df(list = resp, dictionary = dictionary, parse_dates = parse_dates)
   })
 }

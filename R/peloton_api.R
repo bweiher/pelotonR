@@ -17,7 +17,7 @@ peloton_api <- function(path, print_path = FALSE, ...) {
   path <- glue::glue("{path}")
   url <- httr::modify_url("https://api.onepeloton.com/", path = path, ...)
 
-  if(isTRUE(print_path)) cat('api: \n', url)
+  if (isTRUE(print_path)) cat("api: \n", url)
 
   resp <- httr::GET(url = url)
 

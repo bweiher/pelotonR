@@ -4,7 +4,14 @@
 \alias{get_workouts_data}
 \title{Makes a request against the \code{api/workout/workout_id} endpoint}
 \usage{
-get_workouts_data(workout_ids, dictionary = NULL, parse_dates = TRUE, ...)
+get_workouts_data(
+  workout_ids,
+  dictionary = list(numeric = c("v2_total_video_watch_time_seconds",
+    "v2_total_video_buffering_seconds", "v2_total_video_watch_time_seconds",
+    "leaderboard_rank"), list = c("achievement_templates")),
+  parse_dates = TRUE,
+  ...
+)
 }
 \arguments{
 \item{workout_ids}{WorkoutIDs}
