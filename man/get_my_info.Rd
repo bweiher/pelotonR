@@ -7,7 +7,7 @@
 get_my_info(dictionary = NULL, parse_dates = TRUE, ...)
 }
 \arguments{
-\item{dictionary}{A named list mapping a data-type to a column name}
+\item{dictionary}{A named list. Maps a data-type to a column name. If \code{NULL} then no parsing is done}
 
 \item{parse_dates}{Whether to try and guess which columns are dates and convert}
 

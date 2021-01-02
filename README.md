@@ -29,9 +29,9 @@ peloton_auth()
 
 #### Data Available
 
-The main endpoints already have their own helper function that helps parse the response into a `tibble` and iterate through multiple inputs if necessary.
+The main endpoints each have their own helper function that helps parse the API response into a `tibble`, as well as iterating through multiple inputs if necessary.
 
-You can also query other endpoints using `peloton_api` in case new ones are introduced, or if the automatic parsing fails.
+You can also query other endpoints using `peloton_api` in case new endpoints are introduced, or if the automatic parsing fails (can also set p.
 
 The table below documents each endpoint along with its `R` counterpart, and provides a description of what data is there:
 

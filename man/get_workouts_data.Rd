@@ -16,7 +16,7 @@ get_workouts_data(
 \arguments{
 \item{workout_ids}{WorkoutIDs}
 
-\item{dictionary}{A named list mapping a data-type to a column name}
+\item{dictionary}{A named list. Maps a data-type to a column name. If \code{NULL} then no parsing is done}
 
 \item{parse_dates}{Whether to try and guess which columns are dates and convert}
 
