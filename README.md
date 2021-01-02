@@ -6,7 +6,7 @@
 
 <!-- badges: end -->
 
-The goal of `pelotonR` is to provide an `R` interface into the Peloton data API. The package handles authentication, response parsing, and provides helper functions to find and extract data from the most important endpoints.
+`pelotonR` provides an `R` interface into the Peloton data API. The package handles authentication, response parsing, and provides helper functions to find and extract data from the most important endpoints.
 
 ## Installation
 
@@ -27,7 +27,7 @@ library(pelotonR)
 peloton_auth()
 ```
 
-#### Data
+#### Data Available
 
 The main endpoints already have their own helper function that helps parse the response into a `tibble` and iterate through multiple inputs if necessary.
 
@@ -43,8 +43,6 @@ The table below documents each endpoint along with its `R` counterpart, and prov
 | api/user/user_id/workouts                | `get_all_workouts()`       | lists **n** workouts                     |
 
 You can show which endpoint (and arguments) are being passed on under the hood by setting the `print_path` to `TRUE` in any of the `get_` functions or in the `peloton_api` function directly.
-
-------------------------------------------------------------------------
 
 #### Queries
 
@@ -89,7 +87,9 @@ Sometimes the data types returned for particular fields will differ across rides
 
     #> Error: Can't combine `..1$v3_custom_column_name` <integer> and `..10$v3_custom_column_name` <character>.
 
-Each function provides a dictionary of mappings for a few fields that have been identified as being problematic like `v3_custom_column_name` above. If the defaults fail, you can override (*just be sure to also look at the current defaults for the dictionary to know what is already being applied*).
+Each function provides a dictionary of mappings for a few fields that have been identified as being problematic like `v3_custom_column_name` above.
+
+If the defaults fail, you can override (*just be sure to also look at the what the function has set by default).*
 
 In the hypothetical previous error the `v3_custom_column_name` column had an issue:
 
