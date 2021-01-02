@@ -4,14 +4,22 @@
 \alias{get_performance_graphs}
 \title{Makes a request against the \code{api/workout/workout_id/performance_graph} endpoint}
 \usage{
-get_performance_graphs(workout_ids, every_n = 5, dictionary = NULL, ...)
+get_performance_graphs(
+  workout_ids,
+  every_n = 5,
+  dictionary = NULL,
+  parse_dates = TRUE,
+  ...
+)
 }
 \arguments{
 \item{workout_ids}{WorkoutIDs}
 
-\item{every_n}{How often measurements are reported. If set to 1, there will be 60 data points per minute of a workout.}
+\item{every_n}{How often measurements are reported. If set to 1, there will be 60 data points per minute of a workout}
 
 \item{dictionary}{A named list mapping a data-type to a column name}
+
+\item{parse_dates}{Whether to try and guess which columns are dates and convert}
 
 \item{...}{Other arguments passed on to methods}
 }

@@ -4,12 +4,14 @@
 \alias{get_workouts_data}
 \title{Makes a request against the \code{api/workout/workout_id} endpoint}
 \usage{
-get_workouts_data(workout_ids, dictionary = NULL, ...)
+get_workouts_data(workout_ids, dictionary = NULL, parse_dates = TRUE, ...)
 }
 \arguments{
 \item{workout_ids}{WorkoutIDs}
 
 \item{dictionary}{A named list mapping a data-type to a column name}
+
+\item{parse_dates}{Whether to try and guess which columns are dates and convert}
 
 \item{...}{Other arguments passed on to methods}
 }

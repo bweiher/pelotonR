@@ -16,9 +16,9 @@ Currently on [Github](https://github.com/bweiher/pelotonR) only. Install with:
 devtools::install_github("bweiher/pelotonR")
 ```
 
-## Examples
+## Overview
 
-#### **Authenticating**:
+#### **Authentication**
 
 You need to set environmental variables: `PELOTON_LOGIN` and `PELOTON_PASSWORD`, or provide them in this initial step, which must be run before you can issue other queries.
 
@@ -27,15 +27,28 @@ library(pelotonR)
 peloton_auth()
 ```
 
-Most useful endpoints already have functions starting with `get_` that retrieve and parse the API responses, and handle iteration through a list of inputs.
+#### Data
+
+The main endpoints already have their own helper function that helps parse the response into a `tibble` and iterate through multiple inputs if necessary.
 
 You can also query other endpoints using `peloton_api` in case new ones are introduced, or if the automatic parsing fails.
 
-You can see how to call the API independently of the `get_` functions below (*in the portions commented out to the right of each `get_`* call).
+The table below documents each endpoint along with its R counterpart, and provides a description of what data is there:
 
-#### **Interacting**:
+| endpoint                                 | function                   | endpoint description                     |
+|------------------------------------------|----------------------------|------------------------------------------|
+| api/me                                   | `get_my_info()`            | info about you                           |
+| api/workout/workout_id/performance_graph | `get_performance_graphs()` | time series metrics for individual rides |
+| api/workout/workout_id                   | `get_workouts_data()`      | data about rides                         |
+| api/user/user_id/workouts                | `get_all_workouts()`       | lists **n** workouts                     |
 
-There are several endpoints where you need to already know some piece of information to get that particular data.
+You can show which endpoint (and arguments) are being passed on under the hood by setting the `print_path` to `TRUE` in any of the `get_` functions or in the `peloton_api` function directly.
+
+------------------------------------------------------------------------
+
+#### Queries
+
+There are a couple endpoints where you need to already know some piece of information to get that particular data.
 
 For example, to list workouts, you will need your `user_id`, which you can get from the `api/me` endpoint.
 
@@ -54,28 +67,27 @@ It can then be used against the `workouts` endpoint, to fetch your `workout_id`'
 workouts <- get_all_workouts(user_id) # peloton_api("api/$USER_ID/workouts")
 ```
 
-Sometimes the data types returned for particular fields differs across rides, throwing an error.
+#### Errors :x:
 
-Since the API is still evolving, it is also possible for you to specify data types explicitly to get around inconsistencies:
+Sometimes the data types returned for particular fields differs across rides, throwing an error, such as below:
+
+    #> Error: Can't combine `..1$v2_total_video_watch_time_seconds` <integer> and `..10$v2_total_video_watch_time_seconds` <character>.
+
+Since the API is still evolving (and I don't want to hard-code anything in this package), it is also possible for you to specify data types explicitly to get around inconsistencies. For example, the previous error the `v2_total_video_watch_time_seconds` column had an disagreement.
 
 ``` r
+# fix for error 
 workouts <- get_all_workouts(
 userid = user_id,
 dictionary = list(
-"numeric" = c("v2_total_video_buffering_seconds", "v2_total_video_watch_time_seconds")
+"numeric" = c("v2_total_video_watch_time_seconds")
 )
 )
 
 workout_ids <- workouts$id
 ```
 
-Currently, you can coerce fields to one of:
-
--   `character`
-
--   `numeric`
-
--   `list`
+Currently, you can coerce fields to one of (`character`, `numeric`, or `list`)
 
 The final two endpoints contain your performance graphs and other workout data. You need to provide `workout_id`'s here, but each function accepts multiple at once:
 
@@ -88,13 +100,12 @@ pg <- get_performance_graphs(workout_ids, dictionary =
 # get other workout data
 # vectorized function
 
-get_workouts_data(workout_ids = workout_ids,
+wd <- get_workouts_data(workout_ids = workout_ids,
                   dictionary = list(
                     'numeric' =  c("v2_total_video_watch_time_seconds", "v2_total_video_buffering_seconds",
                                    "v2_total_video_watch_time_seconds", "leaderboard_rank"),
                     'list' = c('achievement_templates')
                   ))
-
 ```
 
 ### 
