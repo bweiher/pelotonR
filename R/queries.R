@@ -1,12 +1,10 @@
-utils::globalVariables(c("."))
-
 #' Makes a request against the \code{api/me} endpoint
 #'
 #'
 #' Returns user metadata, including userid, email, account status, etc.  \code{userid} is particularly useful since you need it for \code{\link{get_workouts_data}}.
 #'
 #' @export
-#' @param dictionary A named list mapping a data-type to a column name
+#' @param dictionary A named list. Maps a data-type to a column name. If \code{NULL} then no parsing is done
 #' @param parse_dates Whether to try and guess which columns are dates and convert
 #' @param ... Other arguments passed on to methods
 #' @examples
@@ -30,7 +28,7 @@ get_my_info <- function(dictionary = NULL, parse_dates = TRUE, ...) {
 #' @importFrom rlang .data
 #' @param workout_ids WorkoutIDs
 #' @param every_n How often measurements are reported. If set to 1, there will be 60 data points per minute of a workout
-#' @param dictionary A named list mapping a data-type to a column name
+#' @param dictionary A named list. Maps a data-type to a column name. If \code{NULL} then no parsing is done
 #' @param parse_dates Whether to try and guess which columns are dates and convert
 #' @param ... Other arguments passed on to methods
 #' @examples
@@ -43,17 +41,17 @@ get_my_info <- function(dictionary = NULL, parse_dates = TRUE, ...) {
 #' )
 #' }
 #'
-get_performance_graphs <- function(workout_ids, every_n = 5, dictionary =  list("list" = c("seconds_since_pedaling_start", "segment_list")), parse_dates = TRUE, ...) {
+get_performance_graphs <- function(workout_ids, every_n = 5, dictionary = list("list" = c("seconds_since_pedaling_start", "segment_list")), parse_dates = TRUE, ...) {
   purrr::map_df(workout_ids, function(workout_id) {
-    peloton_api(
+    resp <- peloton_api(
       path = glue::glue("api/workout/{workout_id}/performance_graph"),
       query = list(
         every_n = every_n
       ),
       ...
-    ) %>%
-      .$content %>%
-      parse_list_to_df(., dictionary = dictionary, parse_dates = parse_dates) %>%
+    )$content
+
+    parse_list_to_df(resp, dictionary = dictionary, parse_dates = parse_dates) %>%
       dplyr::mutate(
         id = workout_id
       )
@@ -70,7 +68,7 @@ get_performance_graphs <- function(workout_ids, every_n = 5, dictionary =  list(
 #' @param userid userID
 #' @param num_workouts num_workouts
 #' @param joins additional joins to make on the data (e.g. `ride` or `ride.instructor`, concatenated as a single string. Results in many additional columns being added to the data.frame)
-#' @param dictionary A named list mapping a data-type to a column name
+#' @param dictionary A named list. Maps a data-type to a column name. If \code{NULL} then no parsing is done
 #' @param parse_dates Whether to try and guess which columns are dates and convert
 #' @param ... Other arguments passed on to methods
 #' @examples
@@ -128,7 +126,7 @@ get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID"), num_workouts
 #'
 #' @export
 #' @param workout_ids WorkoutIDs
-#' @param dictionary A named list mapping a data-type to a column name
+#' @param dictionary A named list. Maps a data-type to a column name. If \code{NULL} then no parsing is done
 #' @param parse_dates Whether to try and guess which columns are dates and convert
 #' @param ... Other arguments passed on to methods
 #' @examples
@@ -145,12 +143,12 @@ get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID"), num_workouts
 #' )
 #' }
 get_workouts_data <- function(workout_ids, dictionary = list(
-  "numeric" = c(
-    "v2_total_video_watch_time_seconds", "v2_total_video_buffering_seconds",
-    "v2_total_video_watch_time_seconds", "leaderboard_rank"
-  ),
-  "list" = c("achievement_templates")
-), parse_dates = TRUE, ...) {
+                                "numeric" = c(
+                                  "v2_total_video_watch_time_seconds", "v2_total_video_buffering_seconds",
+                                  "v2_total_video_watch_time_seconds", "leaderboard_rank"
+                                ),
+                                "list" = c("achievement_templates")
+                              ), parse_dates = TRUE, ...) {
   purrr::map_df(workout_ids, function(workout_id) {
     resp <- peloton_api(path = glue::glue("api/workout/{workout_id}"), ...)$content
     parse_list_to_df(list = resp, dictionary = dictionary, parse_dates = parse_dates)

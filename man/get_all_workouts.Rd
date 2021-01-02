@@ -21,7 +21,7 @@ get_all_workouts(
 
 \item{joins}{additional joins to make on the data (e.g. `ride` or `ride.instructor`, concatenated as a single string. Results in many additional columns being added to the data.frame)}
 
-\item{dictionary}{A named list mapping a data-type to a column name}
+\item{dictionary}{A named list. Maps a data-type to a column name. If \code{NULL} then no parsing is done}
 
 \item{parse_dates}{Whether to try and guess which columns are dates and convert}
 

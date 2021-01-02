@@ -17,7 +17,7 @@ get_performance_graphs(
 
 \item{every_n}{How often measurements are reported. If set to 1, there will be 60 data points per minute of a workout}
 
-\item{dictionary}{A named list mapping a data-type to a column name}
+\item{dictionary}{A named list. Maps a data-type to a column name. If \code{NULL} then no parsing is done}
 
 \item{parse_dates}{Whether to try and guess which columns are dates and convert}
 

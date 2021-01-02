@@ -6,7 +6,7 @@
 
 <!-- badges: end -->
 
-The goal of `pelotonR` is to provide an `R` interface into the Peloton data API. The package handles authentication, response parsing, and provides helper functions to find and extract data from the most important endpoints.
+`pelotonR` provides an `R` interface into the Peloton data API. The package handles authentication, response parsing, and provides helper functions to find and extract data from the most important endpoints.
 
 ## Installation
 
@@ -27,11 +27,11 @@ library(pelotonR)
 peloton_auth()
 ```
 
-#### Data
+#### Data Available
 
-The main endpoints already have their own helper function that helps parse the response into a `tibble` and iterate through multiple inputs if necessary.
+The main endpoints each have their own helper function that helps parse the API response into a `tibble`, as well as iterating through multiple inputs if necessary.
 
-You can also query other endpoints using `peloton_api` in case new ones are introduced, or if the automatic parsing fails.
+You can also query other endpoints using `peloton_api` in case new endpoints are introduced, or if the automatic parsing fails (can also set p.
 
 The table below documents each endpoint along with its `R` counterpart, and provides a description of what data is there:
 
@@ -43,8 +43,6 @@ The table below documents each endpoint along with its `R` counterpart, and prov
 | api/user/user_id/workouts                | `get_all_workouts()`       | lists **n** workouts                     |
 
 You can show which endpoint (and arguments) are being passed on under the hood by setting the `print_path` to `TRUE` in any of the `get_` functions or in the `peloton_api` function directly.
-
-------------------------------------------------------------------------
 
 #### Queries
 
@@ -65,49 +63,44 @@ It can then be used against the `workouts` endpoint, to fetch your `workout_id`'
 ``` r
 # get a list of your workouts
 workouts <- get_all_workouts(user_id) # peloton_api("api/$USER_ID/workouts")
-```
-
-#### :x:Errors :x:
-
-Sometimes the data types returned for particular fields differs across rides, throwing an error, such as below:
-
-    #> Error: Can't combine `..1$v2_total_video_watch_time_seconds` <integer> and `..10$v2_total_video_watch_time_seconds` <character>.
-
-Should the **default dictionary** set for each function prove insufficient, it is also possible for you to specify data types explicitly to get around inconsistencies.
-
-For example, in the previous error the `v2_total_video_watch_time_seconds` column had an issue
-
-``` r
-# fix for error 
-workouts <- get_all_workouts(
-userid = user_id,
-dictionary = list(
-"numeric" = c("v2_total_video_watch_time_seconds")
-)
-)
-
 workout_ids <- workouts$id
 ```
-
-Currently, you can coerce fields to one of (`character`, `numeric`, or `list`) if you see an error pop up.
 
 The final two endpoints contain your performance graphs and other workout data. You need to provide `workout_id`'s here, but each function accepts multiple at once:
 
 ``` r
 # get performance graph data
 # vectorized function
-pg <- get_performance_graphs(workout_ids, dictionary =
- list("list" = c("seconds_since_pedaling_start", "segment_list"))) # peloton_api("api/workout/$WORKOUT_ID/performance_graph")
+pg <- get_performance_graphs(workout_ids) # peloton_api("api/workout/$WORKOUT_ID/performance_graph")
 
 # get other workout data
 # vectorized function
 
-wd <- get_workouts_data(workout_ids = workout_ids,
-                  dictionary = list(
-                    'numeric' =  c("v2_total_video_watch_time_seconds", "v2_total_video_buffering_seconds",
-                                   "v2_total_video_watch_time_seconds", "leaderboard_rank"),
-                    'list' = c('achievement_templates')
-                  ))
+wd <- get_workouts_data(workout_ids = workout_ids)
 ```
 
-### 
+------------------------------------------------------------------------
+
+#### :x:***Errors*** :x:
+
+Sometimes the data types returned for particular fields will differ across rides, resulting in an error, like below:
+
+    #> Error: Can't combine `..1$v3_custom_column_name` <integer> and `..10$v3_custom_column_name` <character>.
+
+Each function provides a dictionary of mappings for a few fields that have been identified as being problematic like `v3_custom_column_name` above.
+
+If the defaults fail, you can override (*just be sure to also look at the what the function has set by default).*
+
+In the hypothetical previous error the `v3_custom_column_name` column had an issue:
+
+``` r
+# fix for error 
+workouts <- get_all_workouts(
+userid = user_id,
+dictionary = list(
+"numeric" = c("v3_custom_column_name")
+)
+)
+```
+
+You can coerce fields to one of (`character`, `numeric`, or `list`) if you see an error pop up.
