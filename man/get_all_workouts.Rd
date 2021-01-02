@@ -8,7 +8,9 @@ get_all_workouts(
   userid = Sys.getenv("PELOTON_USERID"),
   num_workouts = 20,
   joins = "",
-  dictionary = NULL,
+  dictionary = list(numeric = c("v2_total_video_buffering_seconds",
+    "v2_total_video_watch_time_seconds")),
+  parse_dates = TRUE,
   ...
 )
 }
@@ -20,6 +22,8 @@ get_all_workouts(
 \item{joins}{additional joins to make on the data (e.g. `ride` or `ride.instructor`, concatenated as a single string. Results in many additional columns being added to the data.frame)}
 
 \item{dictionary}{A named list mapping a data-type to a column name}
+
+\item{parse_dates}{Whether to try and guess which columns are dates and convert}
 
 \item{...}{Other arguments passed on to methods}
 }

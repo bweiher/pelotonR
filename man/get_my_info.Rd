@@ -4,10 +4,12 @@
 \alias{get_my_info}
 \title{Makes a request against the \code{api/me} endpoint}
 \usage{
-get_my_info(dictionary = NULL, ...)
+get_my_info(dictionary = NULL, parse_dates = TRUE, ...)
 }
 \arguments{
 \item{dictionary}{A named list mapping a data-type to a column name}
+
+\item{parse_dates}{Whether to try and guess which columns are dates and convert}
 
 \item{...}{Other arguments passed on to methods}
 }

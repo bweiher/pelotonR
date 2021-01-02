@@ -4,7 +4,7 @@
 \alias{parse_list_to_df}
 \title{Parse the \code{JSON} content of a response and turn the result into a \code{tibble} .}
 \usage{
-parse_list_to_df(list, parse_dates = TRUE, dictionary)
+parse_list_to_df(list, parse_dates, dictionary)
 }
 \arguments{
 \item{list}{The JSON content of a response (aka a named list in R)}

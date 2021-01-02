@@ -5,6 +5,7 @@
 #'
 #' @export
 #' @param path API endpoint to query
+#' @param print_path Show path/endpoint queried
 #' @param ... Additional parameters passed onto methods
 #' @examples
 #' \dontrun{
@@ -12,9 +13,12 @@
 #' peloton_api("api/me")
 #' }
 #'
-peloton_api <- function(path, ...) {
+peloton_api <- function(path, print_path = FALSE, ...) {
   path <- glue::glue("{path}")
   url <- httr::modify_url("https://api.onepeloton.com/", path = path, ...)
+
+  if (isTRUE(print_path)) cat("api: \n", url)
+
   resp <- httr::GET(url = url)
 
   if (httr::http_type(resp) != "application/json") {

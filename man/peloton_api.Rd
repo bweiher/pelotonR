@@ -4,10 +4,12 @@
 \alias{peloton_api}
 \title{Makes a \code{GET} request against one of Peloton's API endpoints}
 \usage{
-peloton_api(path, ...)
+peloton_api(path, print_path = FALSE, ...)
 }
 \arguments{
 \item{path}{API endpoint to query}
+
+\item{print_path}{Show path/endpoint queried}
 
 \item{...}{Additional parameters passed onto methods}
 }

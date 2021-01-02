@@ -12,7 +12,7 @@
 #' parse_list_to_df(peloton_api("api/me")$content)
 #' }
 #'
-parse_list_to_df <- function(list, parse_dates = TRUE, dictionary) {
+parse_list_to_df <- function(list, parse_dates, dictionary) {
   names <- names(list)
   m <- stats::setNames(dplyr::as_tibble(as.data.frame(matrix(nrow = 1L, ncol = length(names)))), names)
   for (column in seq_along(names)) {
