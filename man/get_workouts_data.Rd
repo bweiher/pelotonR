@@ -7,8 +7,8 @@
 get_workouts_data(
   workout_ids,
   dictionary = list(numeric = c("v2_total_video_watch_time_seconds",
-    "v2_total_video_buffering_seconds", "v2_total_video_watch_time_seconds",
-    "leaderboard_rank"), list = c("achievement_templates")),
+    "v2_total_video_buffering_seconds", "leaderboard_rank"), list =
+    c("achievement_templates")),
   parse_dates = TRUE,
   ...
 )
