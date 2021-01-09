@@ -101,8 +101,7 @@ get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID"), num_workouts
     # IF JOIN PARAM is specified, get data out for ride list and add it to that row
     if (joins != "") {
       rides <- purrr::map_df(1:n_workouts, function(x) {
-        tmp_ride <- parse_list_to_df(workouts$ride[[x]], dictionary = dictionary, parse_dates = parse_dates, ...)
-        stats::setNames(tmp_ride, paste0("ride_", colnames(tmp_ride)))
+        parse_list_to_df(stats::setNames(workouts$ride[[x]], paste0("ride_", names(workouts$ride[[x]]))), dictionary = dictionary, parse_dates = parse_dates, ...)
       })
 
       dplyr::left_join(
@@ -144,8 +143,7 @@ get_all_workouts <- function(userid = Sys.getenv("PELOTON_USERID"), num_workouts
 #' }
 get_workouts_data <- function(workout_ids, dictionary = list(
                                 "numeric" = c(
-                                  "v2_total_video_watch_time_seconds", "v2_total_video_buffering_seconds",
-                                  "v2_total_video_watch_time_seconds", "leaderboard_rank"
+                                  "v2_total_video_watch_time_seconds", "v2_total_video_buffering_seconds", "leaderboard_rank"
                                 ),
                                 "list" = c("achievement_templates")
                               ), parse_dates = TRUE, ...) {
